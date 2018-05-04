@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
+            <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+        </f:facet>
+        <title>بهسافت | IPM</title>      
+        <ui:insert name="head" />
+    </h:head>
+    <h:body   class="fontIran Fs12 ClassRTL " >        
+        <ui:repeat value="#{deviceTypeFacade.deviceType}" var="item">
+            <div style="margin-bottom: 10px">
+                <h:form>
+                    <p:panel id="basic" header="دستگاه به لحاظ نظافت در وضعیت مطلوب قرار دارد و نشانه ای از مایعات تراوش شده روی آن دیده نمی شود."  style="margin-bottom:20px">
+
+                        <p:selectOneRadio id="console" value="#{radioView.console}">
+                            <f:selectItem itemLabel="بله" itemValue="1" />
+                            <f:selectItem itemLabel="خیر" itemValue="0" />
+                        </p:selectOneRadio>
+
+                        <f:facet name="footer" >
+                            <div dir="rtl">
+                                <p:inputText style="min-width: 200px;width: 400px"/> 
+                                <div class="EmptyBox5"></div>
+                                <p:inputText style="min-width: 200px;width: 400px"/>
+                            </div>
+                        </f:facet>
+                    </p:panel>
+                </h:form>
+            </div>
+            
+        </ui:repeat>   
+    </h:body>
+
+</html>

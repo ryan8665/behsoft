@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="refresh" content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/login.xhtml"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>بهسافت | ثبت اولیه تجهیزات</title>
+        <h:outputScript name="js/layout.js" library="sentinel-layout" />
+        <ui:insert name="head" />
+    </h:head>
+    <h:body class="ui-sentinel-rtl" onload="#{deviceTypeFacade.hIDseter(login.user_id,login.hospital_ID)} #{deviceTypeFacade.allDevice}" style="background-color: #ffffff" >        
+        <ui:include src="/Template/topbar.xhtml" />
+
+        <ui:include src="/Template/leftmenu.xhtml" />
+        <div id="layout-portlets-cover" class="fontRegular">
+            <ui:insert name="content">
+                <div class="ContainerIndent">
+                    <p:panel style="min-height: 500px">
+                        <div class="ContainerIndent">
+                            <div dir="rtl">
+                                <h:form id="topform">
+                                    <p:commandButton update=":formNew" value="جدید" type="button" onclick="PF('dlg2').show();" />
+                                    
+                                    <p:commandButton  ajax="false" style="float: left" value="Export" type="text" >
+                                           <p:dataExporter id="exporter" type="xls" target=":tableMain:haha" fileName="export" />
+                                    </p:commandButton>
+                                      <p:commandButton  id="search"  value="جستجو"   type="button" style="float: left" >
+                                        <p:ajax  update="topform :tableMain:haha" listener="#{deviceTypeFacade.searchDeviceB()}" />
+                                    </p:commandButton>
+                                    <p:inputText placeholder="شماره اموال" value="#{deviceTypeFacade.searchDevice}" style="float: left;margin-left: 5px">
+                                        <p:ajax event="keyup"  />
+                                    </p:inputText>
+                                    
+                                </h:form>
+                            </div>
+                            <div class="EmptyBox10"></div>
+                            <f:view>
+
+
+                                <h:form id="tableMain">
+
+                                    <p:dataTable  value="#{deviceTypeFacade.lsDevice}" rowKey="#{item.deviceTypeId}" selectionMode="single" id="haha" var="item"  
+                                                  rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+                                                  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                  rowsPerPageTemplate="5,15,50" emptyMessage="No Device found with given criteria" resizableColumns="true" >
+                                        <f:facet name="header">
+                                            لیست تجهیزات
+                                        </f:facet>
+                                        <p:ajax event="rowSelect" update=":viewDit" listener="#{deviceTypeFacade.onRowSelect}" onsuccess="PF('dlg3').show();" />
+                                       
+                                        <p:column class="ClassRTL fontIran Fs12"  width="10%">
+                                            <f:facet name="header">
+                                                <h:outputText value="عدد مدیریت"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.FKdevicename.emNumber}"/>
+                                        </p:column>
+                                        <p:column class="ClassRTL fontIran Fs12" width="40%">
+                                            <f:facet name="header">
+                                                <h:outputText value="مارک و مدل"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.model}"/>
+                                        </p:column>
+                                        <p:column class="ClassRTL fontIran Fs12" width="40%">
+                                            <f:facet name="header">
+                                                <h:outputText value="نام تجهیز"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.FKdevicename.name}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </f:view>
+
+
+                            <div  class="EmptyBox20"></div>
+                            <p:dialog dir="rtl" header="ثبت تجهیز" hideEffect="fade" showEffect="fade" 
+                                      closable="true" closeOnEscape="true" widgetVar="dlg2" modal="true" height="570" width="600">
+                                <h:form id="formNew">
+                                    <p:panel class="Container100 Responsive">                                     
+                                        <p:messages id="messages"  autoUpdate="true" closable="true" />
+
+                                        <p:outputLabel for="device"  value="نام تجهیز" />
+                                        <p:selectOneMenu value="#{deviceTypeFacade.name}" id="device"   var="items"  style="width:300px" class="ClassRTL Container60  Responsive" required="true" requiredMessage="لطفا نام تجهیز را وارد نمائید">
+                                            <f:selectItem  itemLabel="انتخاب کنید" itemValue="" noSelectionOption="false" />
+                                            <c:forEach items="#{deviceNameFacade.deviceName}" var="name">
+                                                <f:selectItem itemLabel="#{name.name}" itemValue="#{name.name}" />
+                                            </c:forEach>
+                                        </p:selectOneMenu>
+                                        <div  class="EmptyBox10"></div>  
+
+                                        <p:outputLabel for="model"  value="مارک و مدل" />
+                                        <p:inputText   id="model" class="Container70  Responsive"  value="#{deviceTypeFacade.model}" label="msgto" required="true" requiredMessage="لطفا مارک و مدل را وارد نمائید"/>
+                                        <div  class="EmptyBox10"></div>
+
+                                        <p:outputLabel for="maintenance"  value="نگهداشت پیشگیرانه" />
+                                        <p:inputTextarea maxlength="1100" counter="display" id="maintenance" class="Container70  Responsive" value="#{deviceTypeFacade.maintenance}"  label="msg maintenance" />
+                                          <div  class="EmptyBox5"></div>  
+                                          <h:outputText id="display" style="float: left" />
+                                        <div  class="EmptyBox10"></div>  
+
+                                        <p:outputLabel for="user_guide"  value="ملاحظات کاربری" />
+                                        <p:inputTextarea maxlength="1000" counter="display1" id="user_guide" class="Container70  Responsive" value="#{deviceTypeFacade.user_guide}"  label="msguser_guide" />
+                                         <div  class="EmptyBox5"></div>  
+                                        <h:outputText id="display1" style="float: left"/>
+                                        <div  class="EmptyBox10"></div> 
+
+                                        <p:outputLabel for="brief_manual"  value="راهنمای کاربری" />
+                                        <p:inputTextarea maxlength="1000" counter="display2" id="brief_manual" class="Container70  Responsive" value="#{deviceTypeFacade.brief_manual}"  label="msgbrief_manual" />
+                                         <div  class="EmptyBox5"></div>  
+                                        <h:outputText id="display2" style="float: left"/>
+                                        <div  class="EmptyBox10"></div> 
+
+                                        <p:outputLabel for="key_reference" value="راهنمای کلیدها" />
+                                        <p:inputTextarea maxlength="400" counter="display3" id="key_reference" class="Container70  Responsive" value="#{deviceTypeFacade.key_reference}"  label="msgkey_reference" />
+                                         <div  class="EmptyBox5"></div>  
+                                        <h:outputText id="display3" style="float: left"/>
+                                        <div  class="EmptyBox10"></div> 
+
+                                        <div dir="ltr">
+                                            <p:commandButton resetValues="true" value="ثبت" update=":tableMain:haha formNew" actionListener="#{deviceTypeFacade.setDevise()}" />
+                                        </div>
+                                    </p:panel>
+                                </h:form>
+                            </p:dialog> 
+                        </div>
+                        <p:dialog  dir="rtl" header="نمایش تجهیز" hideEffect="fade" showEffect="fade" 
+                                   closable="true" closeOnEscape="true" widgetVar="dlg3" modal="true" height="570" width="600">
+                            <h:form id="viewDit">
+                                <p:messages id="messages"  autoUpdate="true" closable="true" />
+                                <p:inputText disabled="true" placeholder="مارک و مدل" id="emodel" class="Container100"  value="#{deviceTypeFacade.emodel}" label="msgto" required="true" requiredMessage="لطفا مارک و مدل را وارد نمائید"/>
+                                <div  class="EmptyBox5"></div>  
+                                <p:inputTextarea counter="d1" placeholder="نگهداشت پیشگیرانه"  maxlength="1100" rows="6" id="emaintenance" class="Container100" value="#{deviceTypeFacade.emaintenance}"  label="msgmaintenance" />
+                               <div  class="EmptyBox5"></div>  
+                                <h:outputText id="d1" style="float: left" />
+                                <div  class="EmptyBox5"></div>  
+                                <p:inputTextarea counter="d2" placeholder="ملاحضات کاربری" rows="6"  maxlength="1000" id="euser_guide" class="Container100" value="#{deviceTypeFacade.euser_guide}"  label="msguser_guide" />
+                                <div  class="EmptyBox5"></div>  
+                                <h:outputText id="d2" style="float: left" />
+                                <div  class="EmptyBox5"></div> 
+                                <p:inputTextarea counter="d3" placeholder="راهنمای کاربری" rows="6"  maxlength="1000" id="ebrief_manual" class="Container100" value="#{deviceTypeFacade.ebrief_manual}"  label="msgbrief_manual" />
+                                <div  class="d3"></div>  
+                                <h:outputText id="d3" style="float: left" />
+                                <div  class="EmptyBox5"></div> 
+                                <p:inputTextarea counter="d4" placeholder="راهنمای کلیدها" rows="6"  maxlength="400" id="ekey_reference" class="Container100" value="#{deviceTypeFacade.ekey_reference}"  label="msgkey_reference" />
+                                <div  class="EmptyBox5"></div>  
+                                <h:outputText id="d4" style="float: left" />
+                                <div  class="EmptyBox5"></div> 
+                                <p:commandButton style="float: left" resetValues="true" value="ویرایش" update=":tableMain:haha viewDit" actionListener="#{deviceTypeFacade.editDevise()}"  />
+                                 <div  class="EmptyBox10"></div> 
+                               
+                            </h:form>
+                        </p:dialog>
+                    </p:panel>
+                    <div class="EmptyBox20"></div>
+                </div>
+                 <ui:include src="/Template/footer.xhtml" />
+            </ui:insert>
+        </div>
+       <p:ajaxStatus style="width:32px; height:32px; position:fixed; left:12px; bottom:10px">
+            <f:facet name="start">
+                <p:graphicImage name="images/preloader.gif" library="sentinel-layout"/>
+            </f:facet>
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+        <h:outputStylesheet name="css/font-icon-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
+    </h:body>
+
+</html>

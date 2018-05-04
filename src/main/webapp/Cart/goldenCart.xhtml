@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://xmlns.jcp.org/jsp/jstl/core">
+
+    <h:head>
+        <title>Golden Cart</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+
+        <h:outputStylesheet name="css/font-icon-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
+        <style type="text/css">        
+            #main {
+                margin-left: 0px;
+                float: none;
+                height: 14.8cm;
+                width: 21cm;
+
+                background-image: url(../resources/img/bg1.jpg);
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover
+            }
+            #main2 {
+                margin-left: 0px;
+                float: none;
+                height: 14.8cm;
+                width: 21cm;
+                background-image: url(../resources/img/bg2.jpg);
+                -webkit-background-size: cover;
+                -moz-background-size: cover;
+                -o-background-size: cover;
+                background-size: cover
+            }
+            #apDiv1 {
+                position: relative;
+                width: 40%;
+                height: 280px;
+                z-index: 1;
+                float: left;
+                margin-top: 150px;
+                margin-right: 0px;
+                margin-bottom: 0px;
+                margin-left: 0px;
+                font-size: 12px;
+            }
+            #apDiv2 {
+                text-align: justify;
+                position: relative;
+                width: 50%;
+                height: 535px;
+                z-index: 1;
+                float: right;
+                margin-top: 10px;
+                margin-right: 0px;
+                margin-bottom: 10px;
+                margin-left: 0px;
+                font-size: 12px;
+            }
+            #apDiv3 {
+                text-align: justify;
+                font-size: 11px;
+                position: relative;
+                width: 90%;
+                height: 400px;
+                z-index: 1;
+                float: right;
+                margin: 10px;
+            }
+
+            body,td,th {
+                font-family: mitra;
+            }
+            #shid {
+                font-family: "Times New Roman", Times, serif;
+                font-weight: bold;
+
+            }
+            .det_ri {
+                font-size: 20px;
+
+                height: 20px;
+
+                margin-top: 8px;
+                margin-right: auto;
+                margin-bottom: 5px;
+                margin-left: auto;
+            }
+            #det_lef {
+                font-size: 9px;
+                text-align: justify;
+                height: 200px;
+                width: 94%;
+                margin-top: 130px;
+                margin-right: auto;
+                margin-bottom: 5px;
+                margin-left: auto;
+            }
+            #det_lef_sub {
+                font-size: 8px;
+                text-align: justify;
+                height: auto;
+                width: 94%;
+                margin-top: 0px;
+                margin-right: auto;
+                margin-bottom: 0px;
+                margin-left: auto;
+            }
+            #bold {
+
+                font-size: 14px;
+
+            }
+            img {
+                float: left;
+                margin: 0 0 10px 10px;
+            }
+            @font-face {
+                font-family: "mitrab";
+                src: url(../Font/mitrab.ttf) format("truetype");
+            }
+            #det_lefe {
+                text-align: justify;
+                font-size: 9px;
+                height: 200px;
+                width: 94%;
+                margin-top: 40px;
+                margin-right: auto;
+                margin-bottom: 5px;
+                margin-left: auto;
+            }
+
+        </style>
+    </h:head>
+
+    <h:body class="fontIran" dir="RTL" onload="#{pieceFacade.newCart()}">
+        
+        <div class="main" id="main">
+            <div id="apDiv1">
+                <div class="det_ri" id="det_ri1"  style="margin-right: 10px"><h:outputText value="#{pieceFacade.g1}" escape="false"/></div>
+                <div class="det_ri" id="det_ri2" style="margin-top: 22px; margin-right: 44px" ><h:outputText value="#{pieceFacade.g2}" escape="false"/></div>
+                <div class="det_ri" id="det_ri3" style="margin-top: 35px; margin-right: 42px" ><h:outputText value="#{pieceFacade.g3}" escape="false"/></div>
+                <div class="det_ri" id="det_ri4" style="margin-top: 22px; margin-right: 47px" ><h:outputText value="#{pieceFacade.g4}" escape="false"/></div>
+                <div class="det_ri" id="det_ri5" style="margin-top: 25px; margin-right: 30px" ><h:outputText value="#{pieceFacade.g5}" escape="false"/></div>
+                <div class="det_ri" id="det_ri6" style="margin-top: 26px; margin-right: 100px" ><h:outputText value="#{pieceFacade.g6}" escape="false"/></div>
+                <div class="det_ri" id="det_ri7" style="margin-top: 26px; margin-right: 90px"  ><h:outputText value="#{pieceFacade.g7}" escape="false"/></div>
+                <div class="det_ri" id="det_ri8" style="margin-top: 30px; margin-right: 20px" ><h:outputText value="#{pieceFacade.g8}" escape="false"/></div>
+            </div>
+            <div id="apDiv2">
+                <div class="det_ri" id="det_lef"><p><h:outputText value="#{pieceFacade.g9}" escape="false"/></p></div>
+            </div>
+
+        </div>
+        <div class="main2" id="main2">
+            <div id="apDiv2">
+
+                <div class="det_rie" id="det_lefe" style="#{pieceFacade.g14}">
+                    <p><h:outputText value="#{pieceFacade.h10}" escape="false"/><img src="/resources/img/#{pieceFacade.deviceid}.png" alt="" style="margin: 2px;margin-bottom: 0px"  height="160" onError="this.onerror=null;this.src='/resources/img/default.png';"></img></p></div>
+                <div class="det_ri" id="det_lef_sub"><p><h:outputText value="#{pieceFacade.g11}" escape="false"/></p></div>
+
+
+            </div>
+            <div id="apDiv2">
+                <div class="det_ri" id="det_lefe" style="#{pieceFacade.g14}"><p><h:outputText value="#{pieceFacade.g12}" escape="false"/></p></div>
+                <div class="det_ri" id="det_lef_sub"><p><h:outputText value="#{pieceFacade.g13}" escape="false"/></p></div>
+            </div>
+        </div> 
+
+    </h:body>
+
+</html>

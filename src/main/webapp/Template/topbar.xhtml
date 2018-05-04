@@ -1,0 +1,64 @@
+<ui:composition 
+
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+
+    <div id="layout-header" class="Unselectable fontRegular">
+        <a href="dashboard.xhtml" id="layout-logo">
+
+            <span class="Fs14 fontIran Fleft"><span class="hardblue ">سامانه </span><span class="softblue Fs16">بهسافت</span>
+            </span>
+        </a>
+        <ul id="sm-topmenu" class="layout-header-widgets white Fs14">
+            <li class="Fleft BordRadHalf TexAlCenter"><i class="icon-power"></i>
+                <ul class="layout-header-widgets-submenu BordRad5 shadows white Animated05">
+                    <li class="Animated05"><a href="/login.xhtml"  class="white Unselectable fontIran Fs12"><i class="icon-ccw-1 "></i>راه‌اندازی مجدد</a></li>
+                    <li class="Animated05"><a href="/login.xhtml"  class="white Unselectable fontIran Fs12"><i class="icon-logout"></i>خروج</a></li>
+                </ul>
+            </li>
+
+            <li onclick="location.href = '/Messages/messageInbox.xhtml';" class="Fleft BordRadHalf TexAlCenter "><i class="icon-mail"></i>
+                <span class="alertBubble BordRad10 Fs9">
+                    <h:form>
+                        <h:outputText id="txt_count" value="#{messageFacade.unreadMsg}" />
+                        <p:poll interval="9" ignoreAutoUpdate="true" listener="#{messageFacade.getUnreadMessage(login.user_id)}" update="txt_count" />
+                    </h:form>
+
+                </span> 
+                <ul>
+
+                </ul>
+            </li>
+            <li onclick="location.href = '/Tasks/tasks.xhtml';" class="Fleft BordRadHalf TexAlCenter "><i class="icon-bell"></i>
+                <span class="alertBubble BordRad10 Fs9">
+                    <h:form>
+                        <h:outputText id="alarm_count" value="#{messageFacade.whattoDo}" />
+                        <p:poll interval="9" ignoreAutoUpdate="true" listener="#{messageFacade.getAlarm(login.hospital_ID)}" update="alarm_count" />
+                    </h:form>
+                </span>
+                <ul>
+
+                </ul>
+            </li>
+
+            <li class="Fleft BordRadHalf TexAlCenter"><i class="icon-user-male"></i>
+                <ul class="layout-header-widgets-submenu BordRad5 shadows white Animated05">
+                    <li class="Animated05"><a class="white Unselectable"><i class="icon-user-male Fs26 OvHidden"></i><span class="fontIran Fs14"><h:outputText value="#{login.name}" escape="false"/><h:outputText value=" " escape="false"/><h:outputText value="#{login.family}" escape="false"/><br/><span class="Fs10">آخرین ورود  <h:outputText value="#{utilities.getCurrentShamsidate2(login.lastSeen)}" escape="false"> </h:outputText></span></span></a></li>
+                    <li class="Animated05"><a href="/Accounting/userGroup.xhtml" class="white Unselectable fontIran Fs12"><i class="icon-users-2"></i>ثبت کاربر جدید</a></li>
+                    <li class="Animated05"><a href="/Profile/profile.xhtml" class="white Unselectable fontIran Fs12"><i class="icon-sliders"></i>پروفایل کاربر</a></li>
+                </ul>
+            </li>
+
+        </ul>
+        <!-- NEVER REMOVE FOLLOWING 'UL' TAG ! BECAUSE THIS CONTAINS RESPONSIVE MODE HEADER MENU OPEN-CLOSE BUTTON -->
+        <ul id="sm-mobiletopmenu" class="layout-header-widgets white Fs14">
+            <li class="Fleft BordRadHalf TexAlCenter Animated05 DisplayOnResponsive"><i class="icon-th-1"></i></li>
+        </ul>
+        <!-- ****** -->
+    </div>
+
+</ui:composition>

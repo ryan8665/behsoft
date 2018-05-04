@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
+    <persistence-unit name="com.mycompany_mavenproject1_war_1.0-SNAPSHOTPU" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>java:app/beh</jta-data-source>
+        <class>com.entity.User</class>
+        <class>com.entity.Answer</class>
+        <class>com.entity.Calibration</class>
+        <class>com.entity.CalibrationResult</class>
+        <class>com.entity.DeviceName</class>
+        <class>com.entity.DeviceType</class>
+        <class>com.entity.Hospital</class>
+        <class>com.entity.LoginHistory</class>
+        <class>com.entity.Message</class>
+        <class>com.entity.Piece</class>
+        <class>com.entity.Question</class>
+        <class>com.entity.QuestionType</class>
+        <class>com.entity.Section</class>
+
+  
+  
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="com.mysql.jdnc.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/ryan?zeroDateTimeBehavior=convertToNull"/>
+            <property name="javax.persistence.jdbc.user" value="root"/>
+            <property name="javax.persistence.jdbc.password" value=""/>
+        </properties>
+    </persistence-unit>
+</persistence>

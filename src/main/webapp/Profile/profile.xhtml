@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+
+    <style type="text/css">
+        .jqplot-target, .jqplot-axis {
+            color: #9fadb5;
+        }
+    </style>
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="refresh" content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/login.xhtml"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>بهسافت | ناحیه کاربری</title>
+        <h:outputScript name="js/layout.js" library="sentinel-layout" />
+        <ui:insert name="head" />
+    </h:head>
+
+    <h:body class="ui-sentinel-rtl" onload="#{user.hIDseter(login.user_id,login.hospital_ID,login.hospital_group)} #{logFacade.hIDseter(login.user_id,login.hospital_ID)} #{pieceFacade.hIDseter(login.user_id,login.hospital_ID)}" style="background-color: #ffffff">        
+        <ui:include src="/Template/topbar.xhtml" />
+
+        <ui:include src="/Template/leftmenu.xhtml" />
+        <div id="layout-portlets-cover" class="fontRegular">
+            <ui:insert name="content">
+                <div class="Container100">
+                    <div class="ContainerIndent">
+                        <div class="EmptyBox20"></div>
+                        <div class="Container100">
+                            <div class="Container75 Responsive100 ui-fluid" >
+                                <div class="ContainerIndent">
+                                    <p:panel style="min-height: 500px;" >
+                                        <f:view>
+                                            <h:form id="fmain">                                             
+                                                <p:dataTable  id="tbmain" rowKey="#{item.logId}" value="#{logFacade.logPerson}" var="item" selectionMode="single"
+                                                              rows="12" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+                                                              {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                              rowsPerPageTemplate="12,20,50" emptyMessage="No Log found with given criteria" >
+
+                                                    <f:facet name="header">
+                                                        مانیتورینگ کاربر
+                                                    </f:facet>
+
+                                                    <p:column class="Fs12 fontIran" width="35%">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="تاریخ"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{utilities.getCurrentShamsidate(item.logDate)}" class="fontIran Fs12"/>
+                                                    </p:column>
+
+                                                    <p:column class="ClassRTL fontIran Fs12" width="40%">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="توضیحات"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.description}" class="fontIran Fs12"/>
+                                                    </p:column>
+
+                                                    <p:column class="ClassRTL fontIran Fs12" width="25%">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="نام کاربر"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.FKuser.name} #{item.FKuser.family}" class="fontIran Fs12"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:form>
+                                        </f:view>
+
+                                    </p:panel>
+                                </div>
+                            </div>
+                            <h:form>
+
+                                <p:poll interval="9" ignoreAutoUpdate="true" listener="#{messageFacade.getUnreadMessage(login.hospital_ID)}" update=":txt_count" />
+                                <p:poll interval="9" ignoreAutoUpdate="true" listener="#{messageFacade.getAlarm(login.hospital_ID)}" update=":alarm_count" />
+                            </h:form>
+                            <div class="Container25 Responsive" >
+                                <div class="ContainerIndent">
+                                    <p:panel style="min-height: 540px;" >
+                                        <i class="icon-user-2 Fs50 Fright Wid25 hardblue TexAlCenter"></i>
+                                        <div class="Fs24 Fright MarTop10 leaden Wid70" dir="rtl"><h:outputText class="red fontIran Fs22" value="#{login.name} #{login.family}" escape="false"/></div>
+                                        <i class=" softgray MarRight10 Fs14 Fright"></i><i class="MarRight10 Fs10 Fright fontIran"><h:outputText dir="ltr" value="#{login.lastSeen}" >  <f:convertDateTime pattern="yyyy-MM-dd H:m" locale="fa-IR"/></h:outputText> آخرین ورود شما</i>
+                                        <div class="EmptyBox10"></div>
+                                        <p:separator styleClass="Wid100"></p:separator>
+                                        <div class="EmptyBox10"></div>
+                                        <div class="Fs16 Fright">
+                                            <a href="/Tasks/tasks.xhtml" class="DispInlBlock Fright Fs16 MarRight20"><i class="hardblue fontIran Fs13"> (<h:outputText id="alarm_count" value="#{messageFacade.whattoDo}" />) درخواست</i>  <i class="icon-briefcase hardblue"></i></a>
+                                            <a href="/Messages/messageInbox.xhtml" class="DispInlBlock Fright Fs16 MarRight20"><i class="hardblue fontIran Fs13"> (<h:outputText id="txt_count" value="#{messageFacade.unreadMsg}" />) پیام</i>  <i class="icon-bell-alt hardblue"></i></a>
+                                            <a href="#" onclick="PF('dlg3').show();" class="DispInlBlock Fright Fs16 MarRight20"><i class="hardblue fontIran Fs13"> تغییر رمز عبور</i>  <i class=" icon-key-outline hardblue"></i></a>
+                                        </div>
+                                        <div class="EmptyBox10"></div>
+                                        <p:separator styleClass="Wid100"></p:separator>
+                                        <div class="EmptyBox10"></div>
+                                        <div class="Container">
+
+                                            <div class="EmptyBox10"></div>
+                                            <div class="Fs12 Fright leaden Wid50 TexAlCenter Responsive fontIran">کنترل کیفی‌<br/><span class="Fs24 orange"><h:outputText value="#{calibrationFacade.getTodayCalibrationUser(login.user_id)}" escape="false"/></span></div>
+                                            <div class="Fs12 Fright leaden Wid50 TexAlCenter Responsive fontIran">ثبت شناسنامه<br/><span class="Fs24 red"><h:outputText value="#{pieceFacade.todayPiece}" escape="false"/></span></div>
+                                            <div class="Fs12 Fright leaden Wid100 TexAlCenter fontIran">IPM<br/><span class="Fs24 hardblue">0</span></div>
+                                            <div class="EmptyBox10"></div>
+                                            <h:form>
+                                                <p:separator styleClass="Wid100"></p:separator>
+                                                <h:outputText class="fontIran Fs11" value="ارسال پیامک در زمان ورود" style="float: right;margin-right:  14px"/>
+                                                <p:inputSwitch value="#{selectBooleanView.value1}" />
+                                                <div class="EmptyBox5"></div>
+                                                <p:separator styleClass="Wid100"></p:separator>
+                                                <h:outputText class="fontIran Fs11" value="ارسال پیامک آلارم کنترل کیفی" style="float: right;margin-right:  14px"/>
+
+                                                <p:inputSwitch value="#{selectBooleanView.value1}" />
+
+                                                <div class="EmptyBox5"></div>
+                                                <p:separator styleClass="Wid100"></p:separator>
+                                                <h:outputText class="fontIran Fs11" value="ارسال پیامک آلارم آی‌پی‌ام" style="float: right;margin-right:  14px"/>
+                                                <p:inputSwitch value="#{selectBooleanView.value1}" />
+
+                                                <div class="EmptyBox5"></div>
+                                                <p:separator styleClass="Wid100"></p:separator>
+                                                <h:outputText class="fontIran Fs12" value="ارسال پیامک آلارم تعمیرات" style="float: right;margin-right:  14px"/>
+                                                <p:inputSwitch value="#{selectBooleanView.value1}" />
+                                            </h:form>
+                                        </div>
+
+                                    </p:panel>
+                                </div>
+                            </div>                                                     
+                        </div>
+                    </div>
+                </div>
+                <p:dialog dir="rtl" header="ویرایش گذرواژه"  showEffect="fade" 
+                          closable="true" closeOnEscape="true"  widgetVar="dlg3" modal="true"  width="400">
+                    <h:form id="ChangPassDialog">
+                        <p:panel>
+                            <p:messages id="messages"  autoUpdate="true" closable="true" />
+                            <p:password placeholder="پسورد فعلی" id="oldPassword" maxlength="10" value="#{user.olpass}"  required="true" />
+                            <p:separator styleClass="Wid100"></p:separator>
+                            <p:password placeholder="پسورد جدید" id="newPassword" match="rePassword" validatorMessage="گذر واژهای وارد شده مطابقت ندارند" maxlength="10" value="#{user.epass}" feedback="true" requiredMessage="لطفا فیلدها را با دقت پر کنید" required="true" />
+                            <div class="EmptyBox5"></div>
+                           <p:password placeholder="تکرار پسورد جدید" id="rePassword" validatorMessage="گذر واژهای وارد شده مطابقت ندارند" maxlength="10" value="#{user.reepass}"  required="true" />
+                            <div class="EmptyBox20"></div>
+                            <div dir="ltr">
+                                <p:commandButton update="ChangPassDialog :fmain:tbmain"  actionListener="#{user.changePass()}" ajax="true" value="ثبت" >
+                                
+                                </p:commandButton>
+                            </div>
+                        </p:panel>
+                    </h:form>
+                </p:dialog>
+
+                <div class="EmptyBox20"></div>
+                <ui:include src="/Template/footer.xhtml" />
+            </ui:insert>
+        </div>
+
+        <p:ajaxStatus style="width:32px; height:32px; position:fixed; left:12px; bottom:10px">
+            <f:facet name="start">
+                <p:graphicImage name="images/preloader.gif" library="sentinel-layout"/>
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <h:outputStylesheet name="css/font-icon-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
+    </h:body>
+
+</html>

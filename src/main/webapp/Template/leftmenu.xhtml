@@ -1,0 +1,52 @@
+<ui:composition 
+    xmlns="http://www.w3.org/1999/xhtml"
+    xmlns:f="http://java.sun.com/jsf/core"
+    xmlns:h="http://java.sun.com/jsf/html"
+    xmlns:ps="http://primefaces.org/sentinel"
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:p="http://primefaces.org/ui">
+
+    <div id="layout-menubar" class="Unselectable fontIran" >
+        <div class="layout-menubarinner-box" id="buttonArea">
+            <a href="#" id="layout-menubar-resize" class="BordRad3" title="Menu Resize"><i class="icon-th-list-2"></i></a>
+            <a href="#" id="layout-menubar-resize2" class="BordRad3" title="Open Menu"><i class="icon-menu"></i></a>
+        </div>
+
+        <div class="layout-menubarinner-box" id="searchArea">
+            <i class="icon-search floatLeft gray"></i>
+            <input type="text" class="layout-menubar-search floatLeft Animated05" placeholder="جستجو"/>
+        </div>
+
+        <h:form id="menuform"  >
+            <ps:menu id="sm_leftmenu">
+                <p:menuitem  id="sm_dashboard" value="داشبورد" icon="icon-home-outline" outcome="/dashboard" containerStyleClass="layout-menubar-active"/>
+                <p:submenu id="sm_sentineltheme" label="پیام‌ها" icon="icon-inbox" >
+                    <p:menuitem id="sm_dashboard10" value="پیام‌های دریافتی" icon=" icon-download-2" outcome="/Messages/messageInbox" containerStyleClass="layout-menubar-active"/>
+                    <p:menuitem id="sm_dashboard11" value="پیام‌های ارسالی‌" icon=" icon-upload-2" outcome="/Messages/messagesSent" containerStyleClass="layout-menubar-active"/>
+                </p:submenu>
+                <p:menuitem  id="sm_news" value="اخبار و اطلاعیه ها" icon="icon-rss-squared" outcome="/News/News" containerStyleClass="layout-menubar-active"/>
+                <p:submenu id="sm_sentineltheme3" label="ساختار" icon="icon-th-large-outline" >
+                    <p:menuitem id="sm_dashboard166" value="تعریف مرکز جدید" icon="icon-h-sigh" outcome="/Admin/newHospital" containerStyleClass="layout-menubar-active"/>
+                    <p:menuitem id="sm_dashboard16" value="ثبت اولیه تجهیزات" icon="icon-box" outcome="/Structure/devices" containerStyleClass="layout-menubar-active"/>
+                    <p:menuitem id="sm_dashboard17" value="ثبت بخش ها" icon="icon-medkit" outcome="/Structure/section" containerStyleClass="layout-menubar-active"/>
+                </p:submenu>
+                <p:submenu id="sm_sentineltheme2" label="عملیات" icon="icon-tasks" >
+                    <p:menuitem id="sm_dashboard12" value="تجهیزات" icon="icon-list-numbered" outcome="/Operations/deviceList" containerStyleClass="layout-menubar-active"/>
+                    <p:menuitem id="sm_dashboard144" value="بارکد" icon=" icon-qrcode" outcome="/Operations/Barcode" containerStyleClass="layout-menubar-active"/>
+                    <p:menuitem id="sm_dashboard14" value="نمونه چک لیست" icon=" icon-check-empty" outcome="/Operations/IPM" containerStyleClass="layout-menubar-active"/>
+                    <p:menuitem id="sm_dashboard15" value="نمونه کارت طلایی" icon="icon-credit-card" outcome="/Operations/GoldenCart" containerStyleClass="layout-menubar-active"/>
+                </p:submenu>
+                
+                <p:menuitem id="sm_dashboard7" value="آلارم ها" icon="icon-bell-alt" outcome="/Tasks/tasks" containerStyleClass="layout-menubar-active"/> 
+                <p:menuitem id="sm_dashboard5" value="کاربری" icon="icon-users-outline" outcome="/Accounting/userGroup" containerStyleClass="layout-menubar-active"/>
+                <p:submenu id="sm_statice" label="آمار و گزارش‌ها" icon="icon-chart-pie" >
+                    <p:menuitem id="sm_dashboard13" value="گزارش اجمالی کنترل کیفی" icon="icon-suitcase" outcome="/Statis/calibration" containerStyleClass="layout-menubar-active"/>
+                     <p:menuitem id="sm_proved" value="گزارش دستگاه‌های اسقاط شده" icon="icon-suitcase" outcome="/Statis/proved" containerStyleClass="layout-menubar-active"/>
+                </p:submenu>
+                <p:menuitem id="sm_dashboard6" value="کاربری نرم افزار" icon="icon-graduation-cap" outcome="/Tutorial/tutorial" containerStyleClass="layout-menubar-active"/>
+                <p:menuitem id="sm_dashboard18" value="درباره ما" icon="icon-info-circled" outcome="/About/about" containerStyleClass="layout-menubar-active"/>
+            </ps:menu>
+        </h:form>
+    </div>
+
+</ui:composition>

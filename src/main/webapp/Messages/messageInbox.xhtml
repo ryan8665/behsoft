@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="refresh" content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/login.xhtml"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>بهسافت | پیامهای دریافتی</title>
+        <h:outputScript name="js/layout.js" library="sentinel-layout" />
+        <ui:insert name="head" />
+    </h:head>
+
+    <h:body class="ui-sentinel-rtl" onload="#{messageFacade.hIDseter(login.user_id)} #{sendMessage.hIDseter(login.user_id)}" style="background-color: #FFFFFF">        
+        <ui:include src="/Template/topbar.xhtml" />
+
+        <ui:include src="/Template/leftmenu.xhtml" />
+
+        <div id="layout-portlets-cover" class="fontRegular">
+            <ui:insert name="content">
+                <div class="ContainerIndent">
+                    <p:panel style="min-height: 500px">
+                        <div class="ContainerIndent">
+                            <div dir="rtl">
+                                <h:form>
+                                    <p:commandButton update=":formNew" value="ایجاد تیکت جدید" type="button" onclick="PF('dlg2').show();" />
+                                     <p:commandButton  ajax="false" style="float: left" value="Export" type="text" >
+                                           <p:dataExporter id="exporter" type="xls" target=":mainTable:haha" fileName="exporte" />
+                                    </p:commandButton>
+                                </h:form>
+                            </div>
+                            <div class="EmptyBox10"></div>                              
+                            <f:view>
+                                <h:form id="mainTable" >                                     
+                                    <p:dataTable value="#{messageFacade.message}" id="haha" var="item" rowKey="#{item.messageId}" selectionMode="single" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+                                                 {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                 rowsPerPageTemplate="5,10,15" emptyMessage="No Message found with given criteria" >
+                                        <f:facet name="header">
+                                            پیام‌های دریافتی
+                                        </f:facet>
+                                        <p:ajax event="rowSelect" update=":formRead" listener="#{messageFacade.onRowSelect}"  onsuccess="PF('dlg3').show();" />
+                                        <p:column width="25%" class="fontIran Fs12">
+                                            <f:facet name="header" class="ClassRTL">
+                                                <h:outputText value="تاریخ"/>
+                                            </f:facet>
+                                            <h:outputText value="#{utilities.getCurrentShamsidate(item.sendingDate)}"/>
+                                        </p:column>
+                                        <p:column  width="60%" class="ClassRTL fontIran Fs12">
+                                            <f:facet name="header">
+                                                <h:outputText value="موضوع"/>
+                                            </f:facet>
+                                            <h:outputText  value="#{item.subject}"/>
+                                        </p:column>
+                                        <p:column  width="15%" class="ClassRTL fontIran Fs12">
+                                            <f:facet name="header">
+                                                <h:outputText value="فرستنده"/>
+                                            </f:facet>
+                                            <h:outputText value="#{item.FKusersender.name} #{item.FKusersender.family}"/>
+                                        </p:column>
+                                    </p:dataTable>
+                                </h:form>
+                            </f:view>
+                           <div  class="EmptyBox20"></div>
+                            <p:dialog dir="rtl" header="ارسال درخواست" hideEffect="fade" showEffect="fade" 
+                                      closable="true" closeOnEscape="true" widgetVar="dlg2" modal="true"  width="600">
+                                <h:form id="formNew">
+                                    <p:panel class="Container100 Responsive">                                     
+                                        <p:messages id="messages"  autoUpdate="true" closable="true" />
+                                        <p:outputLabel for="msgto2"  value="گیرنده" />
+                                        <p:inputText placeholder="پشتیبانی" value="پشتیبانی" id="msgto2" class="Container85  Responsive"  disabled="true" label="msgto"/>
+                                        <div  class="EmptyBox10"></div>
+                                        <p:outputLabel for="msgSubject2"  value="موضوع" />
+                                        <p:inputText id="msgSubject2" class="Container85 Responsive" maxlength="40" value="#{sendMessage.messageSubject}" label="msgSubject" required="true" requiredMessage="لطفا موضوع درخواست خود را وارد فرمائید"/>
+                                        <div  class="EmptyBox10"></div>
+                                        <p:outputLabel for="bodyTxt2"  value="متن" />
+                                        <p:inputTextarea id="bodyTxt2" class="Container85 Responsive" value="#{sendMessage.messageBody}" rows="15" cols="25"  maxlength="300"  autoResize="false" required="true" requiredMessage="لطفا متن درخواست خود را وارد فرمائید"/>
+                                        <div  class="EmptyBox20"></div>
+                                        <div dir="ltr">
+                                            <p:commandButton resetValues="true" value="ارسال" update=":mainTable formNew" actionListener="#{sendMessage.insertMessage()}" />
+                                        </div>
+                                    </p:panel>
+                                </h:form>
+                            </p:dialog> 
+                           
+                           
+                            <p:dialog dir="rtl" header="نمایش پیام" hideEffect="fade" showEffect="fade" 
+                                      closable="true" closeOnEscape="true" widgetVar="dlg3" modal="true"  width="600">
+                                <h:form id="formRead">
+                                    <p:panel class="Container100 Responsive fontIran">                                     
+                                        <p:messages id="rmessages" showDetail="true" autoUpdate="true" closable="true" />
+                                       
+                                        <h:outputText id="fr" value="فرستنده: #{messageFacade.rfrom}" escape="false" class="fontIran"/>
+                                         <div  class="EmptyBox5"></div>
+                                        
+                                        <h:outputText id="rbodyTxt2" value="تاریخ: #{messageFacade.rdate}" escape="false" class="fontIran"/>
+                                       <div  class="EmptyBox5"></div>
+                                        <h:outputText id="su" value="موضوع: #{messageFacade.rsubject}" escape="false" class="fontIran"/>
+                                        
+                                        <div  class="EmptyBox5"></div>
+                                       
+                                         <h:outputText id="bod" value="متن: #{messageFacade.rbody}" escape="false" class="fontIran"/>
+                                        <div  class="EmptyBox20"></div>
+                                         
+                                        <p:inputTextarea required="true" id="reply" style="float: right" class="Container80 Responsive"  value="#{messageFacade.reply}" rows="3" cols="25"  maxlength="300"  autoResize="false" />
+                                        <p:commandButton resetValues="true" value="پاسخ" update=":mainTable formRead" style="float: left" actionListener="#{messageFacade.insertMessageReply()}" />
+                                        <div  class="EmptyBox10"></div>
+                                    </p:panel>
+                                </h:form>
+                            </p:dialog> 
+                        </div>
+                    </p:panel>
+
+                    <div class="EmptyBox20"></div>
+
+                </div>     
+                 <ui:include src="/Template/footer.xhtml" />
+            </ui:insert>
+        </div>
+
+        <p:ajaxStatus style="width:32px; height:32px; position:fixed; left:12px; bottom:10px">
+            <f:facet name="start">
+                <p:graphicImage name="images/preloader.gif" library="sentinel-layout"/>
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <h:outputStylesheet name="css/font-icon-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
+    </h:body>
+
+</html>

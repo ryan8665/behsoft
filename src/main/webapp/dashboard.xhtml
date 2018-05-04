@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <script type="text/javascript">
+        function skinChart() {
+            this.cfg.shadow = false;
+            this.cfg.seriesColors = ['#d1e8ef', '#27aae1', '#276aa9'];
+            this.cfg.grid = {
+                background: '#f3f5f7',
+                borderColor: '#e5ebf0',
+                gridLineColor: '#e5ebf0',
+                shadow: false
+            };
+            this.cfg.axesDefaults = {
+                rendererOptions: {
+                    textColor: '#9fadb5'
+                }
+            };
+            this.cfg.seriesDefaults = {
+                shadow: false,
+                markerOptions: {
+                    shadow: false
+                }
+            }
+        }
+
+        function skinPie() {
+            this.cfg.seriesColors = ['#dae8ef', '#27aae1', '#33ccff', '#9fadb5'];
+            this.cfg.grid = {
+                background: '#ffffff',
+                borderColor: '#eaeaea',
+                gridLineColor: '#e5ebf0',
+                shadow: false,
+                borderWidth: 0
+            };
+            this.cfg.seriesDefaults.shadow = false;
+        }
+    </script>
+    <style type="text/css">
+        .jqplot-target, .jqplot-axis {
+            color: #9fadb5;
+        }
+    </style>
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="refresh" content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/login.xhtml"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+        </f:facet>
+        <title>بهسافت | داشبورد</title>
+        <h:outputScript name="js/layout.js" library="sentinel-layout" />
+        <ui:insert name="head" />
+    </h:head>
+
+    <h:body class="ui-sentinel-rtl fontIran" onload="#{logFacade.hIDseter(login.user_id,login.hospital_ID)} #{pieceFacade.hIDseter(login.user_id,login.hospital_ID)}" >        
+        <ui:include src="/Template/topbar.xhtml" />
+
+        <ui:include src="/Template/leftmenu.xhtml" />
+        <div id="layout-portlets-cover" class="fontRegular">
+            <ui:insert name="content">
+                <div class="Container100">
+                    <div class="ContainerIndent">
+                        <div class="EmptyBox20"></div>
+                        <div class="Container100">
+                            <div class="Container50 Responsive100 ui-fluid" >
+                                <div class="ContainerIndent">
+                                    <p:panel style="min-height: 300px;" >
+                                        <f:view>
+                                            <h:form>                                             
+                                                <p:dataTable rowKey="#{item.logId}" selectionMode="single" value="#{logFacade.log}" var="item" rows="6" paginator="true" paginatorTemplate="{FirstPageLink} 
+                                                             {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                                             emptyMessage="No Log found with given criteria" resizableColumns="true" paginatorPosition="bottom">
+
+                                                    <f:facet name="header" class="fontIran Fs12">
+                                                        مانیتورینگ مرکز
+                                                    </f:facet>
+
+                                                    <p:column width="25%" class="fontIran Fs12">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="تاریخ"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{utilities.getCurrentShamsidate(item.logDate)}">
+                                                            <f:convertDateTime pattern="yyyy/MM/dd HH:mm" />
+                                                        </h:outputText>
+                                                    </p:column>
+
+                                                    <p:column class="ClassRTL fontIran Fs12" width="50%"  >
+                                                        <f:facet name="header">
+                                                            <h:outputText value="توضیحات"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.description}"/>
+                                                    </p:column>
+
+                                                    <p:column class="ClassRTL fontIran Fs12" width="25%">
+                                                        <f:facet name="header">
+                                                            <h:outputText value="نام کاربر"/>
+                                                        </f:facet>
+                                                        <h:outputText value="#{item.FKuser.name} #{item.FKuser.family}"/>
+                                                    </p:column>
+                                                </p:dataTable>
+                                            </h:form>
+                                        </f:view>
+
+                                    </p:panel>
+                                </div>
+                            </div>
+                            <div class="Container25 Responsive">
+                                <div class="ContainerIndent">
+                                    <p:panel style="min-height: 300px;" class="fontIran">
+                                        <div class="Container">
+                                            <i class=" icon-data-science-inv Fs50 Fright Wid25 orange TexAlCenter" ></i>
+                                            <div class="Fs18 Fright MarTop10 leaden Wid70" dir="rtl">امروز در یک نگاه</div>
+                                            <div class="Fs12 Fright leaden Wid70" dir="rtl"><span class="orange"> #{utilities.today()}</span></div>
+                                            <div class="EmptyBox10"></div>
+                                            <p:separator styleClass="Wid100"></p:separator>
+                                            <div class="EmptyBox10"></div>
+                                            <div class="Fs12 Fright leaden Wid50 TexAlCenter Responsive">کالیبراسیون‌های امروز<br/><span class="Fs24 orange"><h:outputText value="#{calibrationFacade.getTodayCalibration(login.hospital_ID)}" escape="false"/></span></div>
+                                            <div class="Fs12 Fright leaden Wid50 TexAlCenter Responsive">شناسنامه‌های امروز<br/><span class="Fs24 red"><h:outputText value="#{pieceFacade.todayPiece}" escape="false"/></span></div>
+                                            <div class="Fs12 Fright leaden Wid100 TexAlCenter">  ‌های امروز IPM‌<br/><span class="Fs24 hardblue">0</span></div>
+                                            <div class="EmptyBox10"></div>
+                                            <p:separator styleClass="Wid100"></p:separator>
+
+                                        </div>
+                                    </p:panel>
+                                </div>
+                            </div>
+                            <div class="Container25 Responsive" >
+                                <div class="ContainerIndent">
+                                    <p:panel style="min-height: 300px;" class="fontIran" >
+                                        <i class="icon-user-2 Fs50 Fright Wid25 hardblue TexAlCenter"></i>
+                                        <div class="Fs17 Fright MarTop10 leaden Wid70" dir="rtl"><span class="hardblue"><h:outputText value="#{login.name}" escape="false"/></span>, خوش آمدید</div>
+                                        <div class="Fs9 Fright leaden Wid70" dir="rtl">شما <span class="red"><h:outputText id="txt_count2" value="#{messageFacade.unreadMsg}" /> نامه خوانده نشده</span> و <span class="red"> <h:outputText id="alarm_count2" value="#{messageFacade.whattoDo}" /> وظیفه</span>  دارید!</div>
+                                        <div class="EmptyBox10"></div>
+                                        <p:separator styleClass="Wid100"></p:separator>
+                                        <div class="EmptyBox10"></div>
+                                        <div class="Fs16 Fright">
+                                            <h:form>
+
+                                                <p:poll interval="9" listener="#{messageFacade.getUnreadMessage(login.user_id)}" update=":txt_count :txt_count2" />
+                                                <p:poll interval="9" listener="#{messageFacade.getAlarm(login.hospital_ID)}" update=":alarm_count :alarm_count2" />
+                                            </h:form>
+                                            <a href="/Tasks/tasks.xhtml" class="DispInlBlock Fright Fs13 MarRight20"><i class="hardblue"> (<h:outputText id="alarm_count" value="#{messageFacade.whattoDo}" />) وظایف</i>  <i class="icon-briefcase hardblue"></i></a>
+                                            <a href="/Messages/messageInbox.xhtml" class="DispInlBlock Fright Fs13 MarRight20"><i class="hardblue"> (<h:outputText id="txt_count" value="#{messageFacade.unreadMsg}" />) پیام</i>  <i class="icon-bell-alt hardblue"></i></a>
+                                            <a href="/Profile/profile.xhtml" class="DispInlBlock Fright Fs13 MarRight20"><i class="hardblue"> تنظیمات</i>  <i class="icon-cog-alt hardblue"></i></a>
+                                        </div>
+                                        <div class="EmptyBox10"></div>
+                                        <p:separator styleClass="Wid100"></p:separator>
+                                        <div class="EmptyBox10"></div>
+                                        <i class="icon-key softgray MarRight10 Fs14 Fright"></i><i class="MarRight10 Fs12 Fright">آخرین ورود شما <h:outputText value="#{utilities.getCurrentShamsidate3(login.lastSeen)}" escape="false"> </h:outputText> </i>
+                                        <div class="EmptyBox10"></div>
+                                        <p:separator styleClass="Wid100"></p:separator>
+                                    </p:panel>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="Container100">
+
+                    <div class="ContainerIndent">
+                        <div class="EmptyBox20"></div>
+                        <div class="Container50 Responsive" dir="rtl">
+
+                            <div class="ContainerIndent">
+
+                                <p:panel style="min-height:350px;">
+                                    <div class="Container100 Fs16 fontIran">
+                                        <i class="icon-graduation-cap"></i> آموزش‌های کاربردی
+                                    </div>
+                                    <div class="EmptyBox10"></div>
+                                    <p:accordionPanel multiple="false" >
+                                        <p:tab  title="آموزش اولویت بندی تجهیزات پزشکی">
+                                            <h:outputText class="fontIran Fs11" 
+                                                          value="امروزه با توجه به لزوم اجرای طرح اعتباربخشی ملی و رعایت استانداردهای بین المللی ، نیاز به 
+                                                          اجرای یک طرح جامع نگهداشت در قالب پروسیجرهای از پیش تعیین شده، بیش از هر زمان احساس 
+                                                          می شود. همانطور که استحضار دارید  آمارهای سازمان جهانی بهداشت WHO حاکی از آن است که با 
+                                                          اجرای طرح های نگهداری پیشگیرانه PM به موازات نگهداشت اصلاحی (CM)، می توان هزینه 
+                                                          برای مجاسبه اولویت ریسک تجهیزات از فرمول اسمیت استفاده می شود که بر این اساس برای هر 
+                                                          تجهیز یک EM Number   محاسبه می گردد که این عدد مبنای فواصل بازرسی قرار می گیرد. EM 
+                                                          Number  را اصطلاحا عدد مدیریت دستگاه (Equipment Management Number)  می نامند.
+                                                          تعمیرات تجهیزات را تا 40% کاهش و طول عمر مفید آنها را افزایش داد." />
+                                        </p:tab>
+                                        <p:tab title="ضوابط نگهداشت اداره کل تجهیزات پزشکی">
+                                            <h:outputText class="fontIran Fs11" value="به كليه برنامه ها، فرآيندها و روشهاي اجرايي كه به منظور اطمينان از ايمني و عملكرد م ؤثر و صحيح تجهيزات پزشكي اطلاق مي گردد. اين تعريف شامل فرآيند هاي نصب و راه اندازي، آموزشهاي اوليه، آزمونهاي پذيرش ، كاليبراسيون و تنظيم ، نگهداري ، تعميرات جزئي، كلي و اساسي ، كليه آزمونها براي حصول اطمينان از ايمني و عملكرد مورد نظر، مستند سازي از قبيل تهيه و به روز رساني شناسنامه، چك ليست ها، برنامه گزارش كار، فرمها و مكاتبات، ارتقاء نرم افزاري و سخت افزاري و آموزشهاي ادواري و موردي مي باشد كه منجر به استفاده بهينه از تجهيزات پزشكي مي گردد.
+                                                          " />
+                                        </p:tab>
+                                        <p:tab title="الزامات اساسي نگهداشت تجهيزات پزشكي">
+                                            <h:outputText class="fontIran Fs11" value="الزامات اساسي نگهداشت تجهيزات پزشكي بر پايه سه مبحث ايمني ، عملكرد و كاليبراسيون استوار مي باشد. هر يك از اين الزامات نقش اساسي در اجراي مطلوب برنامه نگهداشت تجهيزات پزشكي دارد كه تخطي از آنها باعث بروز مشكلات جدي در امر تشخيص، مراقبت و درمان بيماري ها خواهد شد." />
+                                        </p:tab>
+                                        <p:tab title="مراحل چرخه خريد">
+                                            <h:outputText class="fontIran Fs11" value="چرخه تامين و كاربري تجهيزات پزشكي مي بايست با اعلام نياز و درخواست كالا شروع شود. درخواست كالا
+                                                          مي تواند با هدف رفع نياز پزشكي، بدليل كمبود و يا نبود كالا و يا با هدف ارتقاء سطح كيفي امر شخيص و يا درمان
+                                                          انجام گردد. اعلام نياز مي بايست نظام مند و داراي ضوابط و گردش كار معيني باشد.نيازها مي بايست به كميته مركز
+                                                          ارسال گردد.
+                                                          مرحله اولويت بندي درخواستها:
+                                                          تشخيص نياز واقعي و اولويت بندي درخواستها، مرحله دوم گردش كار خريد را شكل مي دهد. اگر ميزان اهميت و
+                                                          درجه اولويت نياز تهيه كالا بدرستي تعيين نگردد فرايند خريد منتج به خريد و يا تامين كالايي مي شود كه مورد نياز
+                                                          اصلي نبوده و يا از اولويت پائيني برخوردار است.اولويت بندي در كميته مركز صورت مي پذيرد.
+                                                          مرحله كارشناسی خريد:
+                                                          پس از تعيين اولويت نياز خريد، انواع كالاهاي موجود در بازار و نيز تامين كنندگان آنها بررسي شده و از ميان آنها
+                                                          اقلام واجد شرايطي كه بيشترين تطبيق را با نياز مجموعه و بودجه موجود دارند، انتخاب مي گردند. بدين منظور لازم
+                                                          است كالاهاي عرضه شده در بازار بر اساس شاخصه هاي مختلفي از جمله ميزان كارآيي، كيفيت ساخت، خدمات پس از
+                                                          فروش مورد انتظار و نيز هزينه خريد، مورد ارزيابي و كارشناسي قرار گيرند كه به مجموعه اين فرايندها، كارشناسي
+                                                          خريد مي گويند.كميته كارشناسي مشورتي دانشگاه مسئول اين مرحله از فرآيند مباشد.
+                                                          مرحله خريد كالا:
+                                                          پس از كارشناسي خريد و انتخاب ويژگيهاي كالاي مورد نظر، عمليات خريد آن آغاز مي شود. اين مجموعه
+                                                          عمليات شامل تامين بودجه و اعتبارات لازم، تعيين روش خريد اعم از خريد مستقيم يا برگزاري مناقصه، عقد
+                                                          قرارداد خريد و در نهايت انجام فرايندهاي مالي و معاملاتي مي باشد.
+                                                          مرحله تحويل، نصب، راه اندازي و آموزش كالا:
+                                                          پس از فرآيند خريد، عمليات تحويل، نصب و راه اندازي، انجام تستهاي پذيرش و آموزش كالا انجام مي شود
+                                                          مرحله كاربري كالا :
+                                                          در اين مرحله كالا براي استفاده آماده بوده وكاربري از كالا آغاز مي شود. در طي مدت بهره برداري از كالا، نگهداري
+                                                          و كاربري از آن مي بايست به شكل اصولي)مطابق ضوابط مديريت نگهداشت تجهيزات پزشكي( انجام گردد تا
+                                                          امكان ارائه خدمات مستمر فراهم گردد.
+                                                          " />
+                                        </p:tab>
+                                    </p:accordionPanel>
+                                </p:panel>
+                            </div>
+                        </div>
+                        <div class="Container50 Responsive50">
+                            <div class="ContainerIndent">
+                                <p:panel style="min-height:350px;">
+                                    <div class="Container100 Responsive ClassRTL Fs16 fontIran">
+                                        <i class="icon-chart-bar"></i> گزارش اجمالی
+                                    </div>
+                                    <div class="Container100">
+                                        <p:chart type="line" model="#{chartView.lineModel}" style="height:300px;margin-top:10px" responsive="true"/>
+                                    </div>
+                                </p:panel>
+                            </div>
+                        </div>
+                        <div class="EmptyBox20"></div>
+                        <div class="EmptyBox20"></div>
+                    </div>
+                </div>
+
+                <div class="EmptyBox20"></div>
+                <ui:include src="/Template/footer.xhtml" />
+            </ui:insert>
+        </div>
+
+
+        <p:ajaxStatus style="width:32px; height:32px; position:fixed; left:12px; bottom:10px">
+            <f:facet name="start">
+                <p:graphicImage name="images/preloader.gif" library="sentinel-layout"/>
+            </f:facet>
+
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <h:outputStylesheet name="css/font-icon-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
+         <h:outputStylesheet name="css/editedstyle.css" library="sentinel-layout" />
+    </h:body>
+
+</html>

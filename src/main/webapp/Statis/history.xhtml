@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:c="http://java.sun.com/jsp/jstl/core">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+            <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
+            <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+        </f:facet>
+        <title>بهسافت | تاریخچه</title>      
+        <ui:insert name="head" />
+    </h:head>
+    <h:body   class="fontIran Fs12 " >    
+        <p:panel style="min-height: 250px">
+            <f:view>
+                <h:form id="formmain2">
+                    <h1 dir="rtl"><h:outputText class="fontIran Fs15" value="سوابق تعمیرات‌"/></h1>
+                    <p:dataTable  id="tbmain2" dir="ltr" value="#{pieceFacade.maintenanceHistory}" var="item" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+                                  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                  rowsPerPageTemplate="5,10,15" emptyMessage="No History found with given criteria" resizableColumns="true" paginatorPosition="bottom" >
+                        <p:column class="fontIran Fs12 ">
+                            <f:facet name="header">
+                                <h:outputText value="تاریخ"/>
+                            </f:facet>
+                            <h:outputText value="#{utilities.getCurrentShamsidate(item.repairDate)}"/>
+                        </p:column>
+
+                        <p:column class="fontIran Fs12 ClassRTL">
+                            <f:facet name="header">
+                                <h:outputText value="توضیحات"/>
+                            </f:facet>
+                            <h:outputText value="#{item.description}"/>
+                        </p:column>
+                        <p:column class="fontIran Fs12 ClassRTL">
+                            <f:facet name="header">
+                                <h:outputText value="رویکرد"/>
+                            </f:facet>
+                            <h:outputText value="#{item.FKmaintenacestatus.value}"/>
+                        </p:column>
+                        <p:column class="fontIran Fs12 ClassRTL">
+                            <f:facet name="header">
+                                <h:outputText value="نام مسئول"/>
+                            </f:facet>
+                            <h:outputText value="#{item.FKrepairannunciator.name} #{item.FKrepairannunciator.family}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+        </p:panel>
+        <p:panel style="min-height: 250px">
+            <f:view>
+                <h:form id="formmain">
+                    <h1 dir="rtl"><h:outputText class="fontIran Fs15" value="سوابق کنترل کیفی"/></h1>
+                    <p:dataTable  id="tbmain" dir="ltr" value="#{pieceFacade.calibration}" var="item" rows="10" paginator="true" paginatorTemplate="{CurrentPageReport}  {FirstPageLink} 
+                                  {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}"
+                                  rowsPerPageTemplate="5,10,15" emptyMessage="No History found with given criteria" resizableColumns="true" paginatorPosition="bottom" >
+                        <p:column class="fontIran Fs12 ">
+                            <f:facet name="header">
+                                <h:outputText value="تاریخ"/>
+                            </f:facet>
+                            <h:outputText value="#{utilities.getCurrentShamsidate(item.executionDate)}"/>
+                        </p:column>
+
+                        <p:column class="fontIran Fs12 ClassRTL">
+                            <f:facet name="header">
+                                <h:outputText value="توضیحات"/>
+                            </f:facet>
+                            <h:outputText value="#{item.description}"/>
+                        </p:column>
+                        <p:column class="fontIran Fs12 ClassRTL">
+                            <f:facet name="header">
+                                <h:outputText value="نتیجه"/>
+                            </f:facet>
+                            <h:outputText value="#{item.FKcalibrationresult.value}"/>
+                        </p:column>
+                        <p:column class="fontIran Fs12 ClassRTL">
+                            <f:facet name="header">
+                                <h:outputText value="نام مسئول"/>
+                            </f:facet>
+                            <h:outputText value="#{item.FKuser.name} #{item.FKuser.family}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:form>
+            </f:view>
+        </p:panel>
+    </h:body>
+
+</html>

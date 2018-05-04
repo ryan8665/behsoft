@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <f:facet name="first">
+            <meta http-equiv="refresh" content="#{facesContext.externalContext.sessionMaxInactiveInterval};url=#{request.contextPath}/login.xhtml"/>
+            <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+            <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+            <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+            <meta name="apple-mobile-web-app-capable" content="yes" />
+
+        </f:facet>
+        <title>بهسافت | درباره ما</title>
+        <h:outputScript name="js/layout.js" library="sentinel-layout" />
+
+        <ui:insert name="head" />
+    </h:head>
+    <h:body   class="fontRegular  white-back ui-sentinel-rtl " >        
+        <ui:include src="/Template/topbar.xhtml" />
+        <ui:include src="/Template/leftmenu.xhtml" />
+        <div id="layout-portlets-cover" >
+            <ui:insert name="content">
+                <div class="Container login-back">
+                    <div class="Container80 MaxWid500 Fnone MarAuto TexAlCenter PaddingTopPercent10">
+                        <span class="Fs30 FontTitilliumSemiBoldItalic Fleft"></span>   
+                    </div>
+                    <!-- About BOX COVER START -->
+                    <div class="Container80 MaxWid500 Opac80  white-back Fnone MarAuto BordRad15" id="login-box">
+                        <div class="Container">
+                            <div class="Container100 Responsive100  " >
+                                <div class="ContainerIndent">
+                                    <p:panel style="min-height: 300px;" class="BordRad15">
+                                       
+                                        <i class=" Fs50 Fright Wid25 hardblue TexAlCenter">  <h:graphicImage name="images/LOGO.svg" library="sentinel-layout" style="width: 75px;"/></i>
+                                        <div class="Fs24 Fright MarTop10 leaden Wid70 fontIran" dir="rtl">سامانه بهسافت</div>
+                                        <div class="Fs14 Fright hardblue  Wid70 fontIran " dir="rtl">سامانه مدیریت تجهیزات بیمارستانی</div>
+                                       <div class="EmptyBox5"></div>
+                                        <p:separator styleClass="Wid100"></p:separator>
+                                        <div class="EmptyBox5"></div>
+                                        <div class="Fs16 " dir="rtl" style="text-align: justify">
+                                            <i class=" fontIran Fs13 " >
+                                                تیم نرم افزاری شرکت سیستم های هوشمند آرشا با شعار ارتقای کیفیت خدمات از طریق گسترش فناوری های نوین در حوزه سلامت، از ابتدای سال 1394 فعالیت خود را به صورت حرفه ای آغاز نموده است. این گروه با برخورداری از کارگروهی تخصصی در حوزه مدیریت تجهیزات پزشکی و انفورماتیک با آگاهی از نیاز های بیمارستان ها و مراکز درمانی درصدد است چالش های موجود دراین زمینه را با تکیه بر ابزار های فناوری اطلاعات حل نماید. این گروه مفتخر است اولین اپلیکیشن مبتنی بر وب و اندروید فرایند های IPM در بیمارستان های سطح کشور را با نام تجاری بهسافت عرضه نماید.
+ </i> 
+                                           
+                                        </div>
+                                        <div class="EmptyBox10"></div>
+                                        <p:separator styleClass="Wid100"></p:separator>
+                                        <div class="EmptyBox10"></div>
+                                        <i class="icon-umbrella softgray MarRight10 Fs14 Fright"></i><i class="fontIran MarRight10 Fs14 Fright">تمامی‌ حقوق برای شرکت سیستم های هوشمند آرشا محفوظ است </i>
+                                        <div class="EmptyBox10"></div>
+                                    </p:panel>
+                                </div>
+                            </div> 
+                        </div>
+                        <span style="margin-left: 15px;">Version: 2.01</span>
+                           
+                    </div>
+                </div>
+            </ui:insert>
+        </div>
+        <p:ajaxStatus style="width:32px; height:32px; position:fixed; left:12px; bottom:10px">
+            <f:facet name="start">
+                <p:graphicImage name="images/preloader.gif" library="sentinel-layout"/>
+            </f:facet>
+            <f:facet name="complete">
+                <h:outputText value="" />
+            </f:facet>
+        </p:ajaxStatus>
+
+        <h:outputStylesheet name="css/font-icon-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/sentinel-layout.css" library="sentinel-layout" />
+        <h:outputStylesheet name="css/core-layout.css" library="sentinel-layout" />
+    </h:body>
+
+</html>
